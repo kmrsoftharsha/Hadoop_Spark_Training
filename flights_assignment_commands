@@ -1,3 +1,6 @@
+---- THis is update script flights -- 
+--- All hive queries
+
 copy the 3 input files to LFS
 
 create 3 tables for each
