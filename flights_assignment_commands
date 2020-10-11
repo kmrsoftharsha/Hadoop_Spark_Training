@@ -1,0 +1,122 @@
+copy the 3 input files to LFS
+
+create 3 tables for each
+
+create table airlines
+(
+code int,
+airline_desc array<string>
+)
+row format delimited fields terminated by ','
+collection items terminated by ':'
+location '/user/vagrant/assignment/airlines'
+tblproperties ("skip.header.line.count"="1");
+;
+
+
+create table flights
+(
+dt string,
+air_code int,
+flight_no int,
+origin string,
+destin string,
+depar int,
+dep_delay int,
+arrival int,
+arr_delay int,
+air_time int,
+dist int
+)
+row format delimited fields terminated by ','
+location '/user/vagrant/assignment/flights'
+tblproperties ("skip.header.line.count"="1")
+;
+
+
+create table airports
+(
+dest_code string,
+airport_desc array<string>
+)
+row format delimited fields terminated by ','
+collection items terminated by ':'
+location '/user/vagrant/assignment/airports'
+tblproperties ("skip.header.line.count"="1")
+;
+
+
+---------------------------------------------
+1.) select 
+airlines.airline_desc[0], count(flights.flight_no) 
+from 
+airlines 
+join 
+flights 
+on (airlines.code=flights.air_code) 
+group by 
+airlines.airline_desc[0];
+
+----------------------------------------------
+
+2.) 
+CREATE TABLE REETU_Flights as 
+select 
+fl.flight_no, 
+al.code, 
+al.airline_desc[0], 
+ap.airport_desc  
+from 
+airlines al
+join 
+flights fl
+on 
+airlines.code=flights.air_code 
+join 
+airports ap 
+on 
+airports.dest_code=flights.destin 
+where flights.destin='LAX';
+
+---------------------------------
+
+3.) select flights.dist, flights.flight_no, airlines.airline_desc[0], flights.origin, flights.destin from flights join airlines on airlines.code=flights.air_code
+order by flights.dist desc limit 1;
+
+-------------------------------------------------------
+Hive = yyyy-mm-dd(date) 
+Timestamp:  2020-10-10 09:08:10:.0
+Select 
+substr(cast(arv_date as string),0,10) as arv_date
+From 
+
+
+
+4.) select 
+airlines.code, 
+airlines.airline_desc[0], 
+avg(dep_delay) as dep_delay_avg,
+avg(arv_delay) as arv_delay_avg 
+from 
+airlines 
+join 
+flights on airlines.code=flights.air_code
+group by 
+airlines.code, airlines.airline_desc[0];
+
+
+---------------------------------------
+
+5.) select origin, count(flights.flight_no) from flights group by origin;
+
+
+---------------------------------
+
+6.) select origin, destin, count(flights.flight_no) from flights group by origin, destin;
+
+
+
+
+
+
+
